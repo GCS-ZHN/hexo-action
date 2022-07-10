@@ -1,6 +1,6 @@
 name: 'Hexo Action'
 description: 'Hexo CI/CD action for automating deployment.'
-author: 'sma11black'
+author: 'sma11black; GCS-ZHN'
 inputs:
   user_name:
     description: 'Github user name'

@@ -3,10 +3,15 @@
 set -e
 
 # setup ssh-private-key
-mkdir -p /root/.ssh/
-echo "$INPUT_DEPLOY_KEY" > /root/.ssh/id_rsa
-chmod 600 /root/.ssh/id_rsa
-ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
+if [[ $INPUT_DEPLOY_KEY == ghp_* ]];then
+    echo "Using github token"
+    sed "s/GITHUB_TOKEN/$INPUT_DEPLOY_KEY/g" _config.yml >tmp && rm _config.yml && mv tmp _config.yml
+else
+    mkdir -p /root/.ssh/
+    echo "$INPUT_DEPLOY_KEY" > /root/.ssh/id_rsa
+    chmod 600 /root/.ssh/id_rsa
+    ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
+fi
 
 # setup deploy git account
 git config --global user.name "$INPUT_USER_NAME"
