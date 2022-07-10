@@ -28,7 +28,7 @@ For more information on these inputs, see the [API Documentation](https://develo
 | --- | --- | --- | --- |
 | `user_name` | NO | The user name of your github account for deploying. | `github-actions[bot]` |
 | `user_email` | NO | The user email of your github account for deploying. | `41898282+github-actions[bot]@users.noreply.github.com`[<sup>1</sup>](#refer-anchor-1) |
-| `deploy_key` | **YES** | The **deploy key** to access your **GitHub Pages repository**. | `null` |
+| `deploy_key` | **YES** | The **deploy key/token** to access your **GitHub Pages repository**. | `null` |
 | `commit_msg` | NO | Git commit messages for your GitHub Pages repository. | `null` |
 
 <div id="refer-anchor-1"></div>
@@ -38,6 +38,13 @@ For more information on these inputs, see the [API Documentation](https://develo
 **Tips**:
 - `user_name` and `user_email`: Github Actions bot is just a bot account to perform these operations so that users would know that they were triggered by automation. There is an known issue if you use this bot account. In your GitHub Pages repository, if you want to filter commits by author, it will return a wrong result: `No commits found for "github-actions[bot]"`. You can avoid such error by using your github account instead of default bot account.
 - `commit_msg`: For [Hexo official](https://hexo.io/docs/one-command-deployment.html#Git), the commit message is default to `Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}`. But for users who actually need to keep commit history, they may not need such one. So the recommended setting is `${{ github.event.head_commit.message }}` so that you can transfer commit messages to the GitHub Pages repository directly. If you prefer the default commit message, it is unnecessary to set in your workflow file or set `commit_msg` to `default`. For users who don’t want any commit history, you can set `commit_msg` to `none`. Since `default` and `none` are reserved words for control, you cannot set the commit message to these two words alone.
+- if `deploy_key` is specific as "ghp_***", it will be regarded as a github token. It will be automatic replace the placeholder "GITHUB_TOKEN" in `_config.yml`
+```yaml
+deploy:
+  type: git
+  repository: https://GCS-ZHN:GITHUB_TOKEN@github.com/GCS-ZHN/GCS-ZHN.github.io.git
+  branch: main
+```
 
 ### 🥒Outputs
 For more information on these outputs, see the [API Documentation](https://developer.github.com/v3/repos/releases/#response-4) for an example of what these outputs look like
